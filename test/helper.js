@@ -6,3 +6,4 @@ global.sinon = require('sinon');
 global.expect = chai.expect;
 global.Airport = require('../app/airport');
 global.Plane = require('../app/plane');
+global.Weather = require('../app/weather');

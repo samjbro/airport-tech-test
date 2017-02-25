@@ -3,14 +3,16 @@
 describe('Feature', function(){
   var plane;
   var airport;
-  var stormy;
+  var random;
   beforeEach(function(){
+    random = sinon.stub(Math,'random');
     plane = new Plane();
     airport = new Airport();
-    stormy = sinon.stub(airport,'isStormy')
-    stormy.returns(false);
   });
   describe('under normal conditions', function(){
+    beforeEach(function(){
+      random.returns(0);
+    });
     it('a plane can land at an airport', function(){
       plane.land(airport);
       expect(airport.planes()).to.contain(plane);
@@ -23,13 +25,17 @@ describe('Feature', function(){
   });
   describe('under stormy conditions', function(){
     it('planes cannot land', function(){
-      stormy.returns(true);
+      random.returns(1);
       expect(function(){ plane.land(airport); }).to.throw('Planes cannot land in a storm.');
     });
     it('planes cannot takeoff', function(){
+      random.returns(0);
       plane.land(airport);
-      stormy.returns(true);
+      random.returns(1);
       expect(function(){ plane.takeoff(); }).to.throw('Planes cannot takeoff in a storm');
     });
+  });
+  afterEach(function(){
+    random.restore();
   });
 });

@@ -3,17 +3,19 @@
 describe('Airport', function(){
   var airport,
       plane,
-      stormy;
+      weather;
   beforeEach(function(){
-    airport = new Airport();
+    weather = sinon.createStubInstance(Weather);
+    airport = new Airport(weather);
     plane = sinon.createStubInstance(Plane);
-    stormy = sinon.stub(airport,'isStormy');
-    stormy.returns(false);
   });
   it('is empty initially', function(){
     expect(airport.planes()).to.eql([]);
   });
   describe('under normal conditions', function(){
+    beforeEach(function(){
+      weather.isStormy.returns(false);
+    });
     it('can clear a plane for landing', function(){
       airport.clearForLanding(plane);
       expect(airport.planes()).to.eql([plane]);
@@ -28,12 +30,13 @@ describe('Airport', function(){
   });
   describe('under stormy conditions', function(){
     it('prevents a plane from landing', function(){
-      stormy.returns(true);
+      weather.isStormy.returns(true);
       expect(function(){ airport.clearForLanding(plane); }).to.throw('Planes cannot land in a storm.');
     });
     it('prevents a plane from taking off', function(){
+      weather.isStormy.returns(false);
       airport.clearForLanding(plane);
-      stormy.returns(true);
+      weather.isStormy.returns(true);
       expect(function(){ airport.clearForTakeoff(plane); }).to.throw('Planes cannot takeoff in a storm.');
     });
   });
