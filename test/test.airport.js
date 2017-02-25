@@ -14,9 +14,11 @@ describe('Airport', function(){
     airport.clearForLanding(plane);
     expect(airport.planes()).to.eql([plane]);
   });
-  it('can clear a plane for takeoff', function(){
+  it('can clear a specific plane for takeoff', function(){
+    var otherPlane = sinon.createStubInstance(Plane);
     airport.clearForLanding(plane);
+    airport.clearForLanding(otherPlane);
     airport.clearForTakeoff(plane);
-    expect(airport.planes()).to.eql([]);
+    expect(airport.planes()).to.eql([otherPlane]);
   });
 });
