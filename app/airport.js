@@ -8,6 +8,9 @@ Airport.prototype = {
   },
   clearForLanding: function(plane){
     this._hangar.push(plane);
+  },
+  clearForTakeoff: function(plane){
+    this._hangar = [];
   }
 
 }

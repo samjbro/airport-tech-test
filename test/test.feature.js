@@ -12,4 +12,9 @@ describe('Feature', function(){
     plane.land(airport);
     expect(airport.planes()).to.contain(plane);
   });
+  it('a plane can takeoff', function(){
+    plane.land(airport);
+    plane.takeoff();
+    expect(airport.planes()).not.to.contain(plane);
+  });
 });
