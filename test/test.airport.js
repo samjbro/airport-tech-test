@@ -20,6 +20,13 @@ describe('Airport', function(){
       airport.clearForLanding(plane);
       expect(airport.planes()).to.eql([plane]);
     });
+    it('prevents planes from landing when airport is full', function(){
+      airport.setCapacity(3);
+      airport.clearForLanding(plane);
+      airport.clearForLanding(plane);
+      airport.clearForLanding(plane);
+      expect(function(){ airport.clearForLanding(plane); }).to.throw('Plane cannot land: Airport is full.');
+    });
     it('can clear a specific plane for takeoff', function(){
       var otherPlane = sinon.createStubInstance(Plane);
       airport.clearForLanding(plane);

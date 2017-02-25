@@ -2,6 +2,7 @@ var Weather = require('./weather');
 function Airport(weather){
   this._weather = typeof weather !== 'undefined' ? weather : new Weather();
   this._hangar = [];
+  this._capacity = 5;
 }
 
 Airport.prototype = {
@@ -12,6 +13,9 @@ Airport.prototype = {
     if(this._weather.isStormy()){
       throw new Error('Planes cannot land in a storm.');
     }
+    if(this._capacity <= this._hangar.length){
+      throw new Error('Plane cannot land: Airport is full.');
+    }
     this._hangar.push(plane);
   },
   clearForTakeoff: function(plane){
@@ -20,6 +24,9 @@ Airport.prototype = {
     }
     var planeIndex = this._hangar.indexOf(plane);
     this._hangar.splice(planeIndex,1);
+  },
+  setCapacity: function(number){
+    this._capacity = number;
   }
 }
 
