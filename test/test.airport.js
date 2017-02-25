@@ -20,13 +20,6 @@ describe('Airport', function(){
       airport.clearForLanding(plane);
       expect(airport.planes()).to.eql([plane]);
     });
-    it('prevents planes from landing when airport is full', function(){
-      airport.setCapacity(3);
-      airport.clearForLanding(plane);
-      airport.clearForLanding(plane);
-      airport.clearForLanding(plane);
-      expect(function(){ airport.clearForLanding(plane); }).to.throw('Plane cannot land: Airport is full.');
-    });
     it('can clear a specific plane for takeoff', function(){
       var otherPlane = sinon.createStubInstance(Plane);
       airport.clearForLanding(plane);
@@ -45,6 +38,22 @@ describe('Airport', function(){
       airport.clearForLanding(plane);
       weather.isStormy.returns(true);
       expect(function(){ airport.clearForTakeoff(plane); }).to.throw('Planes cannot takeoff in a storm.');
+    });
+  });
+  describe('#capacity', function(){
+    it('has default of 5', function(){
+      expect(airport.capacity).to.equal(5);
+    });
+    it('can be overridden', function(){
+      airport.setCapacity(10);
+      expect(airport.capacity).to.equal(10);
+    });
+    it('when reached, prevents planes from landing', function(){
+      airport.setCapacity(3);
+      airport.clearForLanding(plane);
+      airport.clearForLanding(plane);
+      airport.clearForLanding(plane);
+      expect(function(){ airport.clearForLanding(plane); }).to.throw('Plane cannot land: Airport is full.');
     });
   });
 });
